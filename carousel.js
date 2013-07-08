@@ -26,7 +26,8 @@ function urlPhoto(photo) {
 }
 
 function appendPhoto(photo) {
-  $('#gallery').html("<img src=" + photo +">");
+  $('#photo').html("<img src=" + photo +">");
+  preload();
 }
 
 function searchWord(e, self) {
@@ -42,6 +43,13 @@ function keyMove(e) {
   } else if (e.keyCode == 39) {
     position ++;
     appendPhoto(photos[position]);
+  }
+}
+
+function preload() {
+  $('#preload').html("");
+  for (i = position; i < position + 5; i++) {
+    $('#preload').append("<img src=" + photos[i] +">");
   }
 }
 

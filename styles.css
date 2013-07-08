@@ -8,6 +8,12 @@ body {
   text-align: center;
 }
 
+#preload img{
+  height:0;
+  width:0;
+  border:none;
+}
+
 img {
   border: 1px solid black;
 }
