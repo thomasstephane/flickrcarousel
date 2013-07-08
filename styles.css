@@ -1,0 +1,13 @@
+body {
+  font-family: Helvetica, sans-serif;
+}
+
+#carousel {
+  width: 100%;
+  height: 100%;
+  text-align: center;
+}
+
+img {
+  border: 1px solid black;
+}
