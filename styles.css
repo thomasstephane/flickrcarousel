@@ -17,6 +17,7 @@ button,
 form,
 span {
   display: inline;
+  color: gray;
 }
 
 .photo {

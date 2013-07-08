@@ -2,6 +2,7 @@ function Carousel(container){
   this.container = container;
   this.photos = [];
   this.position = 0;
+  this.word;
 }
 
 
@@ -17,6 +18,7 @@ Carousel.prototype.processPhotos = function(data){
 
 Carousel.prototype.flickr = function(word) {
   var self = this;
+  self.word = word;
  $.getJSON('http://api.flickr.com/services/rest/?jsoncallback=?', {
   method: 'flickr.photos.search',
   api_key: 'b87176d912b9ca01fbabb271de79e769',
@@ -34,6 +36,7 @@ Carousel.prototype.appendPhoto = function(photo) {
   var self = this;
   $(self.container).find(".photo").html("<img src=" + photo +">");
   self.counter();
+  self.disable();
   self.preload();
 };
 
@@ -68,6 +71,7 @@ Carousel.prototype.moveForward = function() {
 
 Carousel.prototype.keyMove = function(e) {
   var self = this;
+    self.disable();
   if (e.keyCode == 37) {
     self.moveBack();
   } else if (e.keyCode == 39) {
@@ -77,7 +81,7 @@ Carousel.prototype.keyMove = function(e) {
 
 Carousel.prototype.listeners = function(e) {
   var self = this;
-  $(self.container).keydown(function(e){
+  $(self.container).keyup(function(e){
     self.keyMove(e);
   });
 
@@ -97,6 +101,19 @@ Carousel.prototype.listeners = function(e) {
 
 Carousel.prototype.counter = function() {
   $(this.container).find('span').text("Image " + (this.position + 1) + " of " + this.photos.length);
+};
+
+Carousel.prototype.disable = function() {
+  var self = this;
+  var word = $(this.container).find("input[name=word]").val();
+  var input = $(this.container).find("input[type=submit]");
+  if (word === self.word) {
+    input.attr("disabled", "disabled");
+    input.attr("style", "color: gray;");
+  } else {
+    input.removeAttr("disabled");
+    input.attr("style");
+  }
 };
 
 function pastPosition(args) {
@@ -146,3 +163,4 @@ $(document).on('ready', function(){
     carouselSecond.listeners(e);
   });
 });
+
