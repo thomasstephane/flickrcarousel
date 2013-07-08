@@ -38,12 +38,20 @@ function searchWord(e, self) {
 
 function keyMove(e) {
   if (e.keyCode == 37) {
-    position --;
-    appendPhoto(photos[position]);
+    moveBack();
   } else if (e.keyCode == 39) {
-    position ++;
-    appendPhoto(photos[position]);
+    moveForward();
   }
+}
+
+function moveBack() {
+  position --;
+  appendPhoto(photos[position]);
+}
+
+function moveForward() {
+  position ++;
+  appendPhoto(photos[position]);
 }
 
 function preload() {
@@ -60,5 +68,14 @@ $(document).on('ready', function(){
 
   $(document).keydown(function(e){
       keyMove(e);
+  });
+
+  $('button').on("click", function(e){
+    e.preventDefault();
+    if ($(this).attr("name") === "left") {
+      moveBack();
+    } else if ($(this).attr("name") === "right") {
+      moveForward();
+    }
   });
 });
