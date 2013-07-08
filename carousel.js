@@ -25,9 +25,17 @@ function urlPhoto(photo) {
 }
 
 function appendPhoto(photo) {
-  $('#gallery').append("<img src=" + urlPhoto(photo) +">");
+  $('#gallery').html("<img src=" + urlPhoto(photo) +">");
+}
+
+function searchWord(e, self) {
+  e.preventDefault();
+  var word = $(self).find('input[name="word"]').val();
+  flickr(word);
 }
 
 $(document).on('ready', function(){
-  flickr("flower");
+  $('form').on('submit', function(e){
+    searchWord(e, this);
+  });
 });
