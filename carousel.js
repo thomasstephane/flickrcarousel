@@ -8,14 +8,16 @@ function flickr(word) {
   text: word,
   content_type: 1, //return photo only
   format: 'json'
-  }).success(function(data) {
-    processPhotos(data);
-  }).fail(function(error){
-    console.log("Warning" + error);
-  });
+}).success(function(data) {
+  processPhotos(data);
+}).fail(function(error){
+  console.log("Warning" + error);
+});
 }
 
 function processPhotos(data){
+  position = 0;
+  photos = [];
   $.each(data.photos.photo, function(index, photo){
     photos.push(urlPhoto(photo));
   });
@@ -28,6 +30,40 @@ function urlPhoto(photo) {
 function appendPhoto(photo) {
   $('#photo').html("<img src=" + photo +">");
   preload();
+}
+
+function preload() {
+  $('#preload').html("");
+  for (i = 1; i < 7; i++) {
+    $('#preload').append("<img src=" + photos[nTimes(nextPosition, position, i)] +">");
+    $('#preload').append("<img src=" + photos[nTimes(pastPosition, position, i)] +">");
+  }
+}
+
+function nTimes(fn, element, n, i) {
+  i = i || 0;
+  i ++;
+  if (i === n) {
+    return fn(element);
+  } else {
+    return fn(nTimes(fn, element, n, i));
+  }
+}
+
+function pastPosition(current){
+  if (current === 0) {
+    return (photos.length - 1);
+  } else {
+    return (current - 1);
+  }
+}
+
+function nextPosition(current) {
+  if (current === (photos.length - 1)) {
+    return 0;
+  } else {
+    return (current + 1);
+  }
 }
 
 function searchWord(e, self) {
@@ -45,21 +81,15 @@ function keyMove(e) {
 }
 
 function moveBack() {
-  position --;
+  position = pastPosition(position);
   appendPhoto(photos[position]);
 }
 
 function moveForward() {
-  position ++;
+  position = nextPosition(position);
   appendPhoto(photos[position]);
 }
 
-function preload() {
-  $('#preload').html("");
-  for (i = position; i < position + 5; i++) {
-    $('#preload').append("<img src=" + photos[i] +">");
-  }
-}
 
 $(document).on('ready', function(){
   $('form').on('submit', function(e){
@@ -67,7 +97,7 @@ $(document).on('ready', function(){
   });
 
   $(document).keydown(function(e){
-      keyMove(e);
+    keyMove(e);
   });
 
   $('button').on("click", function(e){
