@@ -1,3 +1,5 @@
+var photos = [];
+var position = 0;
 
 function flickr(word) {
  $.getJSON('http://api.flickr.com/services/rest/?jsoncallback=?', {
@@ -14,18 +16,17 @@ function flickr(word) {
 }
 
 function processPhotos(data){
-  var photos = [];
   $.each(data.photos.photo, function(index, photo){
-    photos.push(photo);
+    photos.push(urlPhoto(photo));
   });
-  appendPhoto(photos[0]);
+  appendPhoto(photos[position]);
 }
 function urlPhoto(photo) {
   return "http://farm" + photo.farm + ".staticflickr.com/" + photo.server + "/" + photo.id + "_" + photo.secret + ".jpg";
 }
 
 function appendPhoto(photo) {
-  $('#gallery').html("<img src=" + urlPhoto(photo) +">");
+  $('#gallery').html("<img src=" + photo +">");
 }
 
 function searchWord(e, self) {
@@ -34,8 +35,22 @@ function searchWord(e, self) {
   flickr(word);
 }
 
+function keyMove(e) {
+  if (e.keyCode == 37) {
+    position --;
+    appendPhoto(photos[position]);
+  } else if (e.keyCode == 39) {
+    position ++;
+    appendPhoto(photos[position]);
+  }
+}
+
 $(document).on('ready', function(){
   $('form').on('submit', function(e){
     searchWord(e, this);
+  });
+
+  $(document).keydown(function(e){
+      keyMove(e);
   });
 });
