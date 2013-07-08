@@ -41,7 +41,7 @@ Carousel.prototype.preload = function() {
   var self = this;
   var div = $(self.container).find('.preload');
   div.html("");
-  for (i = 1; i < 7; i++) {
+  for (i = 1; i < 10; i++) {
     div.append("<img src=" + self.photos[nTimes(nextPosition, [self.photos, self.position], i)[1]] +">");
     div.append("<img src=" + self.photos[nTimes(pastPosition, [self.photos, self.position], i)[1]] +">");
   }
