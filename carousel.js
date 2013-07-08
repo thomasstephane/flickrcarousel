@@ -9,7 +9,6 @@ Carousel.prototype.processPhotos = function(data){
   var self = this;
   self.position = 0;
   self.photos = [];
-  console.log("photos of " + self.container);
   $.each(data.photos.photo, function(index, photo){
     self.photos.push(urlPhoto(photo));
   });
@@ -34,6 +33,7 @@ Carousel.prototype.flickr = function(word) {
 Carousel.prototype.appendPhoto = function(photo) {
   var self = this;
   $(self.container).find(".photo").html("<img src=" + photo +">");
+  self.counter();
   self.preload();
 };
 
@@ -93,6 +93,10 @@ Carousel.prototype.listeners = function(e) {
       self.moveForward();
     }
   });
+};
+
+Carousel.prototype.counter = function() {
+  $(this.container).find('span').text("Image " + (this.position + 1) + " of " + this.photos.length);
 };
 
 function pastPosition(args) {
