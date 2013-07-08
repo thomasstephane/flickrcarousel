@@ -2,7 +2,7 @@ function Carousel(container){
   this.container = container;
   this.photos = [];
   this.position = 0;
-  this.word;
+  this.word = "";
 }
 
 
